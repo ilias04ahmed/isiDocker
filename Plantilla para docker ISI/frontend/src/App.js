@@ -1,20 +1,24 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [results, setResults] = useState([]);
 
-  useEffect(() => {
-    fetch('http://localhost:3000/users')  // hits API Gateway
-      .then(res => res.json())
-      .then(data => setUsers(data))
-      .catch(console.error);
-  }, []);
+  const searchFlights = async () => {
+    const res = await fetch('http://localhost:3000/flights?from=MAD&to=CDG&date=2025-05-10');
+    const data = await res.json();
+    setResults(data);
+  };
 
   return (
-    <div>
-      <h1>User List</h1>
+    <div style={{ padding: '2rem' }}>
+      <h1>Comparador de Vuelos</h1>
+      <button onClick={searchFlights}>Buscar vuelos MAD → CDG</button>
       <ul>
-        {users.map((u, i) => <li key={i}>{u.name}</li>)}
+        {results.map((flight, i) => (
+          <li key={i}>
+            {flight.airline}: {flight.from} → {flight.to} - {flight.price}€
+          </li>
+        ))}
       </ul>
     </div>
   );

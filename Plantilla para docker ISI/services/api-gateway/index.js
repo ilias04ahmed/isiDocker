@@ -1,3 +1,4 @@
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const express = require('express');
 const axios = require('axios');
 const app = express();
@@ -12,6 +13,12 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch users' });
   }
 });
+
+app.use('/flights', createProxyMiddleware({
+  target: process.env.FLIGHT_SERVICE_URL,
+  changeOrigin: true
+}));
+
 
 app.listen(3000, () => {
   console.log('API Gateway running on port 3000');

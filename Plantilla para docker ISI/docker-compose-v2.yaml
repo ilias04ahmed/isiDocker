@@ -7,6 +7,8 @@ services:
     environment:
       - AUTH_SERVICE_URL=http://auth:4000
       - USER_SERVICE_URL=http://user:4001
+      - FLIGHT_SERVICE_URL=http://flight:4002
+
     depends_on:
       - auth
       - user
@@ -56,6 +58,15 @@ services:
     networks:
       - frontend
       - backend
+
+  flight:
+    build: ./services/flight
+    container_name: flight_service
+    ports:
+      - "4002:4002"
+    networks:
+      - backend
+
 
   mongo:
     image: mongo:6.0
