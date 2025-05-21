@@ -16,7 +16,7 @@ services:
     ports:
       - "4002:4002"
     environment:
-      - RAPIDAPI_KEY=a9e9833266msh6e1ebe861609386p12da89jsnb0b6f6f4636b
+      - RAPIDAPI_KEY=4ffa85abf8msh9bd76ae1e1a52cfp1a295fjsn6129ded4fb7d
       - RAPIDAPI_HOST=google-flights4.p.rapidapi.com
     networks:
       - backend
@@ -28,7 +28,7 @@ services:
     ports:
       - "4003:4003"
     environment:
-      - RAPIDAPI_KEY=a9e9833266msh6e1ebe861609386p12da89jsnb0b6f6f4636b
+      - RAPIDAPI_KEY=4ffa85abf8msh9bd76ae1e1a52cfp1a295fjsn6129ded4fb7d
       - RAPIDAPI_HOST=flights-sky.p.rapidapi.com
     networks:
       - backend

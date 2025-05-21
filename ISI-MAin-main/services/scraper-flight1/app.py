@@ -1,12 +1,8 @@
-# services/scraper-flight1/app.py
-
 import os
-import logging
 import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-app.logger.setLevel(logging.DEBUG)
 
 # === CONFIG ===
 RAPIDAPI_KEY  = os.getenv("RAPIDAPI_KEY",  "a9e9833266msh6e1ebe861609386p12da89jsnb0b6f6f4636b")
@@ -15,12 +11,6 @@ BASE_URL      = f"https://{RAPIDAPI_HOST}/flights/search-one-way"
 
 
 def buscar_precio_ida(departure_id: str, arrival_id: str, departure_date: str):
-    """
-    Llama tal cual al Test Endpoint de RapidAPI:
-      GET /flights/search-one-way
-      ?departureId=XXX&arrivalId=YYY&departureDate=YYYY-MM-DD
-      &adults=1&hl=en&gl=US&currency=USD
-    """
     params = {
         "departureId":   departure_id,
         "arrivalId":     arrival_id,
@@ -36,10 +26,7 @@ def buscar_precio_ida(departure_id: str, arrival_id: str, departure_date: str):
     }
 
     resp = requests.get(BASE_URL, headers=headers, params=params, timeout=10)
-    app.logger.debug(f"REQUEST URL → {resp.url}")
-    app.logger.debug(f"RAW RESPONSE → {resp.text}")
-
-    resp.raise_for_status()
+    resp.raise_for_status()  # Levanta una excepción si hay un error
     return resp.json()
 
 
@@ -52,7 +39,7 @@ def health_check():
 def flights_endpoint():
     origin      = request.args.get("origin")
     destination = request.args.get("destination")
-    travel_date = request.args.get("travel_date")  # YYYY-MM-DD
+    travel_date = request.args.get("travel_date")  
 
     if not all([origin, destination, travel_date]):
         return jsonify({"error": "Missing parameters"}), 400
@@ -99,6 +86,8 @@ def flights_endpoint():
             "travel_date": travel_date,
             "price":       price
         })
+
+
 
     # ordena y limita a 10
     normalized.sort(key=lambda x: x["price"])
